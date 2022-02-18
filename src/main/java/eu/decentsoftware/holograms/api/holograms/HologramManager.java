@@ -97,6 +97,7 @@ public class HologramManager extends Ticked {
 		if (clickCooldowns.asMap().containsKey(uuid)) return false;
 		for (Hologram hologram : Hologram.getCachedHolograms()) {
 			if (!hologram.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName())) continue;
+			if (hologram.getLocation().distanceSquared(player.getLocation()) > 100 /* 10 Blocks */) continue;
 			if (hologram.onClick(player, entityId, clickType)) {
 				clickCooldowns.put(uuid, (byte) 1);
 				return true;
