@@ -222,9 +222,9 @@ public class NMS_1_9 extends NMS {
     }
 
     @Override
-    public float getEntityHeigth(EntityType type) {
+    public float getEntityHeight(EntityType type) {
         if (Common.SERVER_VERSION.isBefore(Version.v1_14_R1)) {
-            return super.getEntityHeigth(type);
+            return super.getEntityHeight(type);
         }
 
         if (type == null) return 0.0f;
@@ -337,7 +337,7 @@ public class NMS_1_9 extends NMS {
     }
 
     @Override
-    public void attachFakeEnity(Player player, int vehicleId, int entityId) {
+    public void attachFakeEntity(Player player, int vehicleId, int entityId) {
         Validate.notNull(player);
         Object packet = PACKET_MOUNT_CONSTRUCTOR.newInstance();
         if (packet == null) return;
