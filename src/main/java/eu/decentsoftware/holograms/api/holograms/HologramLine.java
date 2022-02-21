@@ -145,7 +145,6 @@ public class HologramLine extends HologramObject {
     public void setContent(String content) {
         this.content = content;
         this.parseContent();
-        this.update();
     }
 
     public boolean hasOffsets() {
