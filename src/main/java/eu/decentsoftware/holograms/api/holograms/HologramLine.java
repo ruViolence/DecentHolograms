@@ -479,6 +479,10 @@ public class HologramLine extends HologramObject {
         }
     }
 
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
     /*
      *	Override Methods
      */
