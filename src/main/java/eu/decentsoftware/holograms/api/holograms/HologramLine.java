@@ -128,7 +128,7 @@ public class HologramLine extends HologramObject {
         this.content = content;
         this.type = HologramLineType.UNKNOWN;
         this.height = Settings.DEFAULT_HEIGHT_TEXT.getValue();
-        this.parseContent();
+        this.parseContent(true);
     }
 
     /*
@@ -143,8 +143,12 @@ public class HologramLine extends HologramObject {
     }
 
     public void setContent(String content) {
+        setContent(content, true);
+    }
+
+    public void setContent(String content, boolean changeHeight) {
         this.content = content;
-        this.parseContent();
+        this.parseContent(changeHeight);
     }
 
     public boolean hasOffsets() {
@@ -187,41 +191,45 @@ public class HologramLine extends HologramObject {
     /**
      * Parse the current content String.
      */
-    public void parseContent() {
+    public void parseContent(boolean changeHeight) {
         HologramLineType prevType = type;
         String contentU = content.toUpperCase();
         if (contentU.startsWith("#ICON:")) {
             type = HologramLineType.ICON;
-            if (prevType != type) {
+            if (changeHeight && prevType != type) {
                 height = Settings.DEFAULT_HEIGHT_ICON.getValue();
             }
             item = new HologramItem(content.substring("#ICON:".length()));
         } else if (contentU.startsWith("#SMALLHEAD:")) {
             type = HologramLineType.SMALLHEAD;
-            if (prevType != type) {
+            if (changeHeight && prevType != type) {
                 height = Settings.DEFAULT_HEIGHT_SMALLHEAD.getValue();
             }
             item = new HologramItem(content.substring("#SMALLHEAD:".length()));
         } else if (contentU.startsWith("#HEAD:")) {
             type = HologramLineType.HEAD;
-            if (prevType != type) {
+            if (changeHeight && prevType != type) {
                 height = Settings.DEFAULT_HEIGHT_HEAD.getValue();
             }
             item = new HologramItem(content.substring("#HEAD:".length()));
         } else if (contentU.startsWith("#ENTITY:")) {
             type = HologramLineType.ENTITY;
             entity = new HologramEntity(content.substring("#ENTITY:".length()));
-            height = NMS.getInstance().getEntityHeight(entity.getType()) + 0.15;
+            if (changeHeight) {
+                height = NMS.getInstance().getEntityHeight(entity.getType()) + 0.15;
             setOffsetY(-(height + (Common.SERVER_VERSION.isAfterOrEqual(Version.v1_13_R1) ? 0.1 : 0.2)));
+            }
             return;
         } else {
             type = HologramLineType.TEXT;
-            if (prevType != type) {
+            if (changeHeight && prevType != type) {
                 height = Settings.DEFAULT_HEIGHT_TEXT.getValue();
             }
             text = content;
         }
-        setOffsetY(type.getOffsetY());
+        if (changeHeight) {
+            setOffsetY(type.getOffsetY());
+        }
     }
 
     public Map<String, Object> serializeToMap() {

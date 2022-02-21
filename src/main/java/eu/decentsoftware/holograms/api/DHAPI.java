@@ -385,13 +385,24 @@ public final class DHAPI {
      * @throws IllegalArgumentException If any of the arguments is null.
      */
     public static void setHologramLine(HologramLine line, String content) throws IllegalArgumentException {
+        setHologramLine(line, content, true);
+    }
+
+    /**
+     * Set a new content to hologram line and update it.
+     *
+     * @param line The line.
+     * @param content The new content.
+     * @throws IllegalArgumentException If any of the arguments is null.
+     */
+    public static void setHologramLine(HologramLine line, String content, boolean changeHeight) throws IllegalArgumentException {
         Validate.notNull(line);
         Validate.notNull(content);
 
         if (!line.getContent().equals(content)) {
-            line.setContent(content);
+            line.setContent(content, changeHeight);
             line.update();
-            if (line.hasParent()) {
+            if (changeHeight && line.hasParent()) {
                 line.getParent().realignLines();
             }
         }
@@ -409,13 +420,25 @@ public final class DHAPI {
      * @throws IllegalArgumentException If any of the arguments is null or the indexes are invalid.
      */
     public static void setHologramLine(HologramPage page, int lineIndex, String content) throws IllegalArgumentException {
+        setHologramLine(page, lineIndex, content, true);
+    }
+
+    /**
+     * Set a new content to hologram line and update it.
+     *
+     * @param page The parent page.
+     * @param lineIndex The index of the line.
+     * @param content The new content.
+     * @throws IllegalArgumentException If any of the arguments is null or the indexes are invalid.
+     */
+    public static void setHologramLine(HologramPage page, int lineIndex, String content, boolean changeHeight) throws IllegalArgumentException {
         Validate.notNull(page);
         Validate.notNull(content);
         HologramLine line = page.getLine(lineIndex);
         if (line == null) {
             throw new IllegalArgumentException("Given line index is out of bounds for the hologram page.");
         }
-        setHologramLine(line, content);
+        setHologramLine(line, content, changeHeight);
     }
 
     /**
@@ -434,12 +457,37 @@ public final class DHAPI {
      * Set a new content to hologram line and update it.
      *
      * @param hologram The parent hologram.
+     * @param lineIndex The index of the line.
+     * @param content The new content.
+     * @throws IllegalArgumentException If any of the arguments is null or the indexes are invalid.
+     */
+    public static void setHologramLine(Hologram hologram, int lineIndex, String content, boolean changeHeight) throws IllegalArgumentException {
+        setHologramLine(hologram, 0, lineIndex, content, changeHeight);
+    }
+
+    /**
+     * Set a new content to hologram line and update it.
+     *
+     * @param hologram The parent hologram.
      * @param pageIndex The index of the parent page.
      * @param lineIndex The index of the line.
      * @param content The new content.
      * @throws IllegalArgumentException If any of the arguments is null or the indexes are invalid.
      */
     public static void setHologramLine(Hologram hologram, int pageIndex, int lineIndex, String content) throws IllegalArgumentException {
+        setHologramLine(hologram, pageIndex, lineIndex, content, true);
+    }
+
+    /**
+     * Set a new content to hologram line and update it.
+     *
+     * @param hologram The parent hologram.
+     * @param pageIndex The index of the parent page.
+     * @param lineIndex The index of the line.
+     * @param content The new content.
+     * @throws IllegalArgumentException If any of the arguments is null or the indexes are invalid.
+     */
+    public static void setHologramLine(Hologram hologram, int pageIndex, int lineIndex, String content, boolean changeHeight) throws IllegalArgumentException {
         Validate.notNull(hologram);
         Validate.notNull(content);
 
@@ -451,7 +499,7 @@ public final class DHAPI {
         if (line == null) {
             throw new IllegalArgumentException("Given line index is out of bounds for the hologram page.");
         }
-        setHologramLine(line, content);
+        setHologramLine(line, content, changeHeight);
     }
 
     /**
