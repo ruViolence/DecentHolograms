@@ -369,6 +369,14 @@ public class HologramLine extends HologramObject {
             } else if (HologramLineType.HEAD.equals(type) || HologramLineType.SMALLHEAD.equals(type)) {
                 nms.helmetFakeEntity(player, HologramItem.parseItemStack(getItem().getContent(), player), entityIds[0]);
             }
+            // Reset helmet slot for when type does not match
+            if (type != HologramLineType.HEAD && type != HologramLineType.SMALLHEAD) {
+                nms.helmetFakeEntity(player, null, entityIds[0]);
+            }
+        }
+        // Clear the item field when it is no longer needed and the helmet has been reset for all spectators
+        if (players.length == 0 && type != HologramLineType.HEAD && type != HologramLineType.SMALLHEAD) {
+            item = null;
         }
     }
 
