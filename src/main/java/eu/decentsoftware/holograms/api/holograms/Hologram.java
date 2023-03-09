@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Getter
@@ -163,6 +164,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
     protected boolean downOrigin = Settings.DEFAULT_DOWN_ORIGIN.getValue();
     protected boolean alwaysFacePlayer = false; //Settings.DEFAULT_ALWAYS_FACE_PLAYER.getValue();
     private final AtomicInteger tickCounter;
+    private @Getter @Setter Predicate<Player> canShowFilter;
 
     /*
      *	Constructors
@@ -181,10 +183,15 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
     }
 
     public Hologram(String name, Location location, Configuration config, boolean enabled) {
+        this(name, location, config, enabled, null);
+    }
+
+    public Hologram(String name, Location location, Configuration config, boolean enabled, Predicate<Player> canShowFilter) {
         super(location);
         this.name = name;
         this.config = config;
         this.enabled = enabled;
+        this.canShowFilter = canShowFilter;
         this.saveToFile = this.config != null;
         this.tickCounter = new AtomicInteger();
         this.addPage();
@@ -601,4 +608,9 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
         return ImmutableList.copyOf(pages);
     }
 
+    @Override
+    public boolean canShow(Player player) {
+        if (canShowFilter != null && !canShowFilter.test(player)) return false;
+        return super.canShow(player);
+    }
 }
