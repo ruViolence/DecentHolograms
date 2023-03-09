@@ -29,8 +29,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     compileOnly 'org.jetbrains:annotations:22.0.0'
     annotationProcessor 'org.jetbrains:annotations:22.0.0'
-
-    implementation 'org.bstats:bstats-bukkit:2.2.1'
 }
 
 sourceCompatibility = 1.8
@@ -78,5 +76,5 @@ jar {
 }
 
 shadowJar {
-    relocate "org.bstats", "eu.decentsoftware.holograms.metrics"
+
 }
